@@ -132,11 +132,11 @@ var BET_MATCHES_STATUS = {
 
 var LEVERAGE_UNIT = 5040;
 
-var MAINNET_UNSPENDABLE = 'SFRXXXXXXXXXXXXXXXXXXXXXXXXXUWLpVr';
-var MAINNET_BURN_START = 207270;
+var MAINNET_UNSPENDABLE = 'SaFFuJKbA91NPwiNfrf17MctVFtG96tGLn';
+var MAINNET_BURN_START = 225260;
 var MAINNET_BURN_END = MAINNET_BURN_START + (3600 * 45);
-var TESTNET_UNSPENDABLE = 'StrMTo1GjdmYqu66mrhsjb7yed7tvAfrxx';
-var TESTNET_BURN_START = 207270;
+var TESTNET_UNSPENDABLE = 'STEStYMu2aumYr3Y92yrJiBdya518bojJZ';
+var TESTNET_BURN_START = 225260;
 var TESTNET_BURN_END = 4017708;
 
 /***********
@@ -158,9 +158,9 @@ var USE_TESTNET = (   (((location.pathname == "/" || location.pathname == "/src/
                   );
 
 
-var BLOCKEXPLORER_URL = USE_TESTNET ? "http://testnet.saffroncoin.com" : "http://explorer.saffroncoin.org";
-var GOOGLE_ANALYTICS_UAID = null; //will be set in counterwallet.js
-var ROLLBAR_ACCESS_TOKEN = null; //will be set in counterwallet.js
+var BLOCKEXPLORER_URL = USE_TESTNET ? "http://testnet.saffroncoin.com" : "http://explorer.saffroncoin.com";
+var GOOGLE_ANALYTICS_UAID = null; //will be set in csfrwallet.js
+var ROLLBAR_ACCESS_TOKEN = null; //will be set in csfrwallet.js
 
 var TRANSACTION_DELAY = 5000; // delay between transaction to avoid error -22 (vin reused)
 var TRANSACTION_MAX_RETRY = 5; // max retry when transaction failed (don't include first transaction, so 3 retry means 4 queries)

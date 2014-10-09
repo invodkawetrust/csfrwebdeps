@@ -51,12 +51,12 @@ CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
     cwkeys[address] = cwk;
   }
 
-  Counterblock.getBalances(addresses, cwkeys, callback);
+  cSFRBlock.getBalances(addresses, cwkeys, callback);
   
 }
 
 // This function return an Bitcore HierarchicalKey instance
-// compatible with old counterwallet. ie generates
+// compatible with old csfrwallet. ie generates
 // sames addresses
 // seed: hex string
 CWHierarchicalKey.prototype.oldHierarchicalKeyFromSeed = function(seed) {

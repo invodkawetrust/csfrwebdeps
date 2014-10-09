@@ -160,7 +160,7 @@ function makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError)
 }
 
 function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSuccess, onError, httpMethod) {
-  /*Makes a JSON RPC API call to a specific counterpartyd/counterblockd endpoint.
+  /*Makes a JSON RPC API call to a specific csfrd/csfrblockd endpoint.
    
     -endpoints: The specific API endpoint URL string to make the API request to.
      If a list of endpoint URLs are specified instead of a single URL, then we attempt the request
@@ -177,11 +177,11 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
   if(typeof(httpMethod)==='undefined') httpMethod = "POST"; //default to POST
   assert(httpMethod == "POST" || httpMethod == "GET", "Invalid HTTP method");
   
-  //make JSON API call to counterblockd
+  //make JSON API call to csfrblockd
   if(destType == "csfrblockd") {
     makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError);
   } else if(destType == "csfrd") {
-    //make JSON API call to counterblockd, which will proxy it to counterpartyd
+    //make JSON API call to csfrblockd, which will proxy it to csfrd
     makeJSONRPCCall(endpoints, "proxy_to_csfrd", {"method": method, "params": params }, timeout, onSuccess, onError);
   }
 }
@@ -238,7 +238,7 @@ function _multiAPIPrimative(method, params, onFinished) {
         
         if(method != "is_ready") {
           //525 DETECTION (needed here and in failoverAPI() as failoverAPI() doesn't use this primative)
-          //detect a special case of all servers returning code 525, which would mean counterpartyd had a reorg and/or we are upgrading
+          //detect a special case of all servers returning code 525, which would mean csfrd had a reorg and/or we are upgrading
           var allNotCaughtUp = true;
           for(var j=0;j < gatheredResults.length; j++) {
             if(!gatheredResults['jqXHR'] || gatheredResults['jqXHR'].status != '525') {
@@ -264,10 +264,10 @@ function _multiAPIPrimative(method, params, onFinished) {
  
 /*
  AVAILABLE API CALL METHODS:
- * failoverAPI: Used for all counterpartyd get_ API requests (for now...later we may want to move to multiAPINewest)
- * multiAPI: Used for storing counterblockd state data (store_preferences, store_chat_handle, etc)
- * multiAPINewest: Used for fetching state data from counterblockd (e.g. get_preferences, get_chat_handle)
- * multiAPIConsensus: Used for all counterpartyd create_ API requests
+ * failoverAPI: Used for all csfrd get_ API requests (for now...later we may want to move to multiAPINewest)
+ * multiAPI: Used for storing csfrblockd state data (store_preferences, store_chat_handle, etc)
+ * multiAPINewest: Used for fetching state data from csfrblockd (e.g. get_preferences, get_chat_handle)
+ * multiAPIConsensus: Used for all csfrd create_ API requests
 */
 
 function failoverAPI(method, params, onSuccess, onError) {
@@ -287,7 +287,7 @@ function failoverAPI(method, params, onSuccess, onError) {
   }
   //525 DETECTION (needed here and in _multiAPIPrimative) - wrap onError (so that this works even for user supplied onError)
   onErrorOverride = function(jqXHR, textStatus, errorThrown, endpoint) {
-    //detect a special case of all servers returning code 525, which would mean counterpartyd had a reorg and/or we are upgrading
+    //detect a special case of all servers returning code 525, which would mean csfrd had a reorg and/or we are upgrading
     //TODO: this is not perfect in this failover case now because we only see the LAST error. We are currently assuming
     // that if a) the LAST server returned a 525, and b) all servers are erroring out or down, that all servers are
     // probably returning 525s or updating (or messed up somehow) and we should just log the client out to be safe about it.
