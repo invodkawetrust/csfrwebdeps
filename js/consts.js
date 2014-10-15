@@ -4,16 +4,16 @@
 var IS_MOBILE_OR_TABLET = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var MAX_INT = Math.pow(2, 63) - 1;
 var UNIT = 100000000; //# satoshis in whole
-var MIN_FEE = 1000000; // in satoshis (== .01 SFR)
+var MIN_FEE = 100000; // in satoshis (== .001 SFR)
 var REGULAR_DUST_SIZE = 5430;
 var MULTISIG_DUST_SIZE = 7800;
-var MIN_PRIME_BALANCE = 50000000; //in satoshis ... == .5 SFR
-var ASSET_CREATION_FEE_XCP = 10000; //in normalized cSFR
+var MIN_PRIME_BALANCE = 5000000; //in satoshis ... == .05
+var ASSET_CREATION_FEE_XCP = 2; //in normalized cSFR
 var MAX_ASSET_DESC_LENGTH = 41; //42, minus a null term character?
 var FEE_FRACTION_REQUIRED_DEFAULT_PCT = .9;   //0.90% of total order
 var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   //1.00% of total order
 var FEE_FRACTION_DEFAULT_FILTER = .95;
-var BTC_ORDER_MIN_AMOUNT = 0.1;
+var BTC_ORDER_MIN_AMOUNT = 0.01;
 var B26_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var ORIG_REFERER = document.referrer;
 
@@ -133,8 +133,6 @@ var BET_MATCHES_STATUS = {
 var LEVERAGE_UNIT = 5040;
 
 var MAINNET_UNSPENDABLE = 'SaFFuJKbA91NPwiNfrf17MctVFtG96tGLn';
-var MAINNET_BURN_START = 225260;
-var MAINNET_BURN_END = MAINNET_BURN_START + (3600 * 45);
 var TESTNET_UNSPENDABLE = 'STEStYMu2aumYr3Y92yrJiBdya518bojJZ';
 var TESTNET_BURN_START = 225260;
 var TESTNET_BURN_END = 4017708;
@@ -158,14 +156,14 @@ var USE_TESTNET = (   (((location.pathname == "/" || location.pathname == "/src/
                   );
 
 
-var BLOCKEXPLORER_URL = USE_TESTNET ? "http://testnet.saffroncoin.com" : "http://explorer.saffroncoin.com";
-var GOOGLE_ANALYTICS_UAID = null; //will be set in csfrwallet.js
-var ROLLBAR_ACCESS_TOKEN = null; //will be set in csfrwallet.js
+var BLOCKEXPLORER_URL = USE_TESTNET ? "http://test.bitcore.io" : "http://live.bitcore.io";
+var GOOGLE_ANALYTICS_UAID = null; //will be set in counterwallet.js
+var ROLLBAR_ACCESS_TOKEN = null; //will be set in counterwallet.js
 
 var TRANSACTION_DELAY = 5000; // delay between transaction to avoid error -22 (vin reused)
 var TRANSACTION_MAX_RETRY = 5; // max retry when transaction failed (don't include first transaction, so 3 retry means 4 queries)
 
-var DONATION_ADDRESS = USE_TESTNET ? 'SWrMTo1GjdmYqu66mrhsjb7yed7tvAfrxx' : 'Saf9mC4QAhPDs7C3uCvMk4e5zxPeSXEdKt'; // testnet faucet
+var DONATION_ADDRESS = USE_TESTNET ? 'SWrMTo1GjdmYqu66mrhsjb7yed7tvAfrxx' : 'Saf9mC4QAhPDs7C3uCvMk4e5zxPeSXEdKt';
 
 var APPROX_SECONDS_PER_BLOCK = USE_TESTNET ? 90 : 90; //a *rough* estimate on how many seconds per each block (used for estimating open order time left until expiration, etc)
 

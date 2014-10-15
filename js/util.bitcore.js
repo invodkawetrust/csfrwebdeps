@@ -51,12 +51,12 @@ CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
     cwkeys[address] = cwk;
   }
 
-  cSFRBlock.getBalances(addresses, cwkeys, callback);
+  Counterblock.getBalances(addresses, cwkeys, callback);
   
 }
 
 // This function return an Bitcore HierarchicalKey instance
-// compatible with old csfrwallet. ie generates
+// compatible with old counterwallet. ie generates
 // sames addresses
 // seed: hex string
 CWHierarchicalKey.prototype.oldHierarchicalKeyFromSeed = function(seed) {
@@ -65,7 +65,7 @@ CWHierarchicalKey.prototype.oldHierarchicalKeyFromSeed = function(seed) {
   // "historical" reason we keep seed as string to not
   // change generated addresses from the same passphrase.
   var words = bytesToWordArray(seed);  
-  var hash = CryptoJS.HmacSHA512(words, 'Saffroncoin seed');
+  var hash = CryptoJS.HmacSHA512(words, 'Bitcoin seed');
   hash = wordArrayToBytes(hash);
   hash = bitcore.Buffer(hash);
   
@@ -325,7 +325,7 @@ CWBitcore.checkTransactionDest = function(txHex, source, dest) {
       var addresses = CWBitcore.extractAddressFromTxOut(tx.outs[i]).split(',');
       var containsSource = _.intersection(addresses, source).length > 0;
       var containsDest = _.intersection(addresses, dest).length > 0;
-      if ( (containsSource == false && containsDest == false) && tx.outs[i].getScript().classify() != bitcore.Script.TX_RETURN ) {
+      if (!containsSource && !containsDest) {
         return false;
       } else if (addresses.length>1) {
         // if multisig we accept only value==MULTISIG_DUST_SIZE
@@ -338,25 +338,39 @@ CWBitcore.checkTransactionDest = function(txHex, source, dest) {
 }
 
 CWBitcore.compareOutputs = function(source, txHexs) {
-  
-  var tx0 = CWBitcore.parseRawTransaction(txHexs[0]); 
 
-  for (var t = 1; t < txHexs.length; t++) {
-    var tx1 = CWBitcore.parseRawTransaction(txHexs[t]); 
-    if (tx1.outs.length != tx0.outs.length) {
-      return false;
-    }
-    for (var i=0; i<tx0.outs.length; i++) {
-      var addresses0 = CWBitcore.extractAddressFromTxOut(tx0.outs[i]).split(',').sort().join(',');
-      var addresses1 = CWBitcore.extractAddressFromTxOut(tx1.outs[i]).split(',').sort().join(',');
-      var amount0 = tx0.outs[i].getValue();
-      var amount1 = tx1.outs[i].getValue();
-
-      if (addresses0 != addresses1 || (addresses0.indexOf(source) == -1 && amount0 != amount1)) {
+  if (txHexs[0].indexOf("=====TXSIGCOLLECT") != -1) {
+    // armory transaction, we just compare if strings are the same.
+    for (var t = 1; t < txHexs.length; t++) {
+      if (txHexs[t] != txHexs[0]) {
         return false;
       }
     }
+
+  } else {
+
+    var tx0 = CWBitcore.parseRawTransaction(txHexs[0]); 
+
+    for (var t = 1; t < txHexs.length; t++) {
+      var tx1 = CWBitcore.parseRawTransaction(txHexs[t]); 
+      if (tx1.outs.length != tx0.outs.length) {
+        return false;
+      }
+      for (var i=0; i<tx0.outs.length; i++) {
+        var addresses0 = CWBitcore.extractAddressFromTxOut(tx0.outs[i]).split(',').sort().join(',');
+        var addresses1 = CWBitcore.extractAddressFromTxOut(tx1.outs[i]).split(',').sort().join(',');
+        var amount0 = tx0.outs[i].getValue();
+        var amount1 = tx1.outs[i].getValue();
+
+        if (addresses0 != addresses1 || (addresses0.indexOf(source) == -1 && amount0 != amount1)) {
+          return false;
+        }
+      }
+    }
+
   }
+  
+  
   return true;
 
 }

@@ -56,7 +56,7 @@ function smartFormat(num, truncateDecimalPlacesAtMin, truncateDecimalPlacesTo) {
 }
 
 function assetsToAssetPair(asset1, asset2) {
-  //NOTE: This MUST use the same logic/rules as csfrblockd's assets_to_asset_pair() function in lib/util.py
+  //NOTE: This MUST use the same logic/rules as counterblockd's assets_to_asset_pair() function in lib/util.py
   var base = null;
   var quote = null;
 
@@ -94,11 +94,11 @@ function getLinkForCPData(type, dataID, dataTitle, htmlize) {
   if(typeof(type)==='undefined') type = 'tx';
   var url = null;
   if(type == 'address') { //dataID is an address
-    url = "http://csfrexplorer.saffroncoin.com/address.aspx?q=" + dataID;
+    url = "http://blockscan.com/address.aspx?q=" + dataID;
   } else if(type == 'order') { //txID is an order ID
-    url = "http://csfrexplorer.saffroncoin.com/order.aspx?q=" + dataID;
+    url = "http://blockscan.com/order.aspx?q=" + dataID;
   } else if(type == 'tx') { //generic TX
-    url = "http://csfrexplorer.saffroncoin.com/tx.aspx?q=" + dataID;
+    url = "http://blockscan.com/tx.aspx?q=" + dataID;
   } else {
     assert(false, "Unknown type of " + type);
   }
@@ -133,12 +133,12 @@ function getAddressLabel(address) {
 }
 
 function testnetBurnDetermineEarned(blockHeight, burned) {
-  //burned is the quantity of BTC to burn (as a float -- normalized value)
-  //XCP quantity returned is as a float -- normalized value
+  //burned is the quantity of SFR to burn (as a float -- normalized value)
+  //cSFR quantity returned is as a float -- normalized value
   burned = denormalizeQuantity(burned);
-  var total_time = USE_TESTNET ? (TESTNET_BURN_END - TESTNET_BURN_START) : (MAINNET_BURN_END - MAINNET_BURN_START);
-  var partial_time = USE_TESTNET ? (TESTNET_BURN_END - blockHeight) : (MAINNET_BURN_END - blockHeight);
-  var multiplier = 100 * (0.85 + 0.15 * (partial_time / total_time)); //will be approximately 100 to 85 over period
+  var total_time = TESTNET_BURN_END - TESTNET_BURN_START;
+  var partial_time = TESTNET_BURN_END - blockHeight;
+  var multiplier = 1000 * (1 + .5 * (partial_time / total_time)); //will be approximate
   var earned = Decimal.round(new Decimal(burned).mul(multiplier), 8, Decimal.MidpointRounding.ToEven).toFloat();
   return normalizeQuantity(earned);
 }

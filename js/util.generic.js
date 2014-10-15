@@ -245,7 +245,7 @@ function currency(amount, unit) {
 }
 
 function satoshiToXCP(amount) {
-  return currency(amount, 'XCP');
+  return currency(amount, 'cSFR');
 }
 
 function round(amount, decimals) {
@@ -283,6 +283,9 @@ function get_duration(interval) {
   return 'Unknown';
 }
 
+bytesToHex = function(t){for(var e=[],r=0;r<t.length;r++)e.push((t[r]>>>4).toString(16)),e.push((15&t[r]).toString(16));return e.join("")};
+hexToBytes = function(t){for(var e=[],r=0;r<t.length;r+=2)e.push(parseInt(t.substr(r,2),16));return e};
+
 function genRandom() {
   var random = new Uint8Array(16);
             
@@ -296,11 +299,11 @@ function genRandom() {
     assert(false, errText);
   }
 
-  return Crypto.util.bytesToHex(random);
+  return bytesToHex(random);
 }
 
 function doubleHash(hexstr) {
-  return bitcore.util.sha256(bitcore.util.sha256(Crypto.util.hexToBytes(hexstr))).toString('hex');
+  return bitcore.util.sha256(bitcore.util.sha256(hexToBytes(hexstr))).toString('hex');
 }
 
 //Helper for closure-based inheritance (see http://www.ruzee.com/blog/2008/12/javascript-inheritance-via-prototypes-and-closures)
