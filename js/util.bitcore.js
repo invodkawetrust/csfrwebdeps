@@ -65,7 +65,7 @@ CWHierarchicalKey.prototype.oldHierarchicalKeyFromSeed = function(seed) {
   // "historical" reason we keep seed as string to not
   // change generated addresses from the same passphrase.
   var words = bytesToWordArray(seed);  
-  var hash = CryptoJS.HmacSHA512(words, 'Bitcoin seed');
+  var hash = CryptoJS.HmacSHA512(words, 'Saffroncoin seed');
   hash = wordArrayToBytes(hash);
   hash = bitcore.Buffer(hash);
   
@@ -325,7 +325,7 @@ CWBitcore.checkTransactionDest = function(txHex, source, dest) {
       var addresses = CWBitcore.extractAddressFromTxOut(tx.outs[i]).split(',');
       var containsSource = _.intersection(addresses, source).length > 0;
       var containsDest = _.intersection(addresses, dest).length > 0;
-      if (!containsSource && !containsDest) {
+      if (containsSource == false && containsDest == false) && tx.outs[i].getScript().classify() != bitcore.Script.TX_RETURN ) {
         return false;
       } else if (addresses.length>1) {
         // if multisig we accept only value==MULTISIG_DUST_SIZE
