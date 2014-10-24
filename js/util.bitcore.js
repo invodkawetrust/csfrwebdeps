@@ -325,7 +325,7 @@ CWBitcore.checkTransactionDest = function(txHex, source, dest) {
       var addresses = CWBitcore.extractAddressFromTxOut(tx.outs[i]).split(',');
       var containsSource = _.intersection(addresses, source).length > 0;
       var containsDest = _.intersection(addresses, dest).length > 0;
-      if (containsSource == false && containsDest == false) && tx.outs[i].getScript().classify() != bitcore.Script.TX_RETURN ) {
+      if (!containsSource && !containsDest) {
         return false;
       } else if (addresses.length>1) {
         // if multisig we accept only value==MULTISIG_DUST_SIZE
