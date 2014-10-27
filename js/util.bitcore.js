@@ -51,7 +51,7 @@ CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
     cwkeys[address] = cwk;
   }
 
-  Counterblock.getBalances(addresses, cwkeys, callback);
+  cSFRBlock.getBalances(addresses, cwkeys, callback);
   
 }
 
