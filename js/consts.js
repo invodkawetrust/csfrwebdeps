@@ -8,7 +8,7 @@ var MIN_FEE = 100000; // in satoshis (== .001 SFR)
 var REGULAR_DUST_SIZE = 56000;
 var MULTISIG_DUST_SIZE = 2 * 56000;
 var MIN_PRIME_BALANCE = 5000000; //in satoshis ... == .05
-var ASSET_CREATION_FEE_XCP = 90; //in normalized cSFR
+var ASSET_CREATION_FEE_XCP = 1500; //in normalized cSFR
 var MAX_ASSET_DESC_LENGTH = 41; //42, minus a null term character?
 var FEE_FRACTION_REQUIRED_DEFAULT_PCT = .9;   //0.90% of total order
 var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   //1.00% of total order
